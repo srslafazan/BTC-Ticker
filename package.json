@@ -3,20 +3,16 @@
   "productName": "XRP Ticker",
   "version": "1.0.0",
   "main": "main.js",
-  "license": "ISC",
-  "author": "Justin Sisley",
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./icon.icns --overwrite && open out"
+    "package": "electron-packager ./ --platform=darwin --arch=x64 --out=dist --icon=./icon.icns --overwrite"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justinsisley/xrp-ticker.git"
+    "url": "git+https://github.com/justinsisley/XRP-Ticker.git"
   },
-  "bugs": {
-    "url": "https://github.com/justinsisley/xrp-ticker/issues"
-  },
-  "homepage": "https://github.com/justinsisley/xrp-ticker#readme",
+  "license": "MIT",
+  "author": "Justin Sisley",
   "devDependencies": {
     "electron-packager": "^7.3.0",
     "electron-prebuilt": "^1.2.7"
