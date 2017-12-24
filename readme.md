@@ -17,7 +17,11 @@
   <a href="https://david-dm.org/justinsisley/XRP-Ticker?type=dev"><img src="https://david-dm.org/justinsisley/XRP-Ticker/dev-status.svg?style=flat"></a>
 </p>
 
-## Installation
+## Installation for Users
+
+[Download the latest release](https://github.com/justinsisley/XRP-Ticker/releases/latest), then unzip the archive and double-click on the app to run it. Feel free to move the app into `/Applications` if you'd like.
+
+## Installation for Developers
 
 ```bash
 git clone https://github.com/justinsisley/XRP-Ticker
