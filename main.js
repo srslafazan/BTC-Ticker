@@ -1,101 +1,70 @@
-const { app, BrowserWindow, ipcMain, Tray } = require('electron');
+const { app, Menu, Tray } = require('electron');
 const path = require('path');
+const request = require('request');
+const open = require('open');
 
-const assetsDirectory = path.join(__dirname, 'assets');
+let tray;
 
-let tray = undefined;
-let window = undefined;
+// Don't show the app in the dock
+app.dock.hide();
 
-// Don't show the app in the doc
-app.dock.hide()
+const onQuit = () => app.quit();
+const onFileBug = () => open('https://github.com/justinsisley/XRP-Ticker/issues');
+
+function getJSON(url) {
+  return new Promise((resolve, reject) => {
+    request({
+      url,
+      headers: {
+        'User-Agent': 'XRP-Ticker',
+      },
+    }, (error, response, body) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve(JSON.parse(body));
+    });
+  });
+}
+
+function createTray() {
+  tray = new Tray(path.join(__dirname, 'assets', 'xrp.png'));
+
+  const url = 'https://api.github.com/repos/justinsisley/XRP-Ticker/releases/latest';
+
+  getJSON(url).then((release) => {
+    const contextMenu = Menu.buildFromTemplate([
+      { type: 'normal', label: `XRP Ticker`, enabled: false },
+      { type: 'normal', label: release.tag_name, enabled: false },
+      { type: 'separator' },
+      { type: 'normal', label: 'File a Bug', click: onFileBug },
+      { type: 'separator' },
+      { type: 'normal', label: 'Quit', click: onQuit },
+    ]);
+
+    tray.setContextMenu(contextMenu);
+  });
+}
+
+function updateView() {
+  const url = 'https://min-api.cryptocompare.com/data/price?fsym=XRP&tsyms=USD';
+
+  getJSON(url).then((data) => {
+    const value = `$${data.USD}`;
+
+    tray.setTitle(value);
+    tray.setToolTip(value);
+  });
+}
 
 app.on('ready', () => {
   createTray();
-  createWindow();
-})
 
-// Quit the app when the window is closed
-app.on('window-all-closed', () => {
-  app.quit();
-})
+  // Get initial data
+  updateView();
 
-const createTray = () => {
-  tray = new Tray(path.join(assetsDirectory, 'xrp.png'));
-  tray.on('right-click', toggleWindow);
-  tray.on('double-click', toggleWindow);
-
-  tray.on('click', function(event) {
-    toggleWindow();
-
-    // Show devtools when command clicked
-    if (window.isVisible() && process.defaultApp && event.metaKey) {
-      window.openDevTools({ mode:'detach' });
-    }
-  })
-}
-
-const getWindowPosition = () => {
-  const windowBounds = window.getBounds();
-  const trayBounds = tray.getBounds();
-
-  // Center window horizontally below the tray icon
-  const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
-
-  // Position window 4 pixels vertically below the tray icon
-  const y = Math.round(trayBounds.y + trayBounds.height + 4);
-
-  return { x, y };
-}
-
-const createWindow = () => {
-  window = new BrowserWindow({
-    width: 150,
-    height: 125,
-    show: false,
-    frame: false,
-    fullscreenable: false,
-    resizable: false,
-    transparent: true,
-    webPreferences: {
-      // Prevents renderer process code from not running when window is
-      // hidden
-      backgroundThrottling: false
-    }
-  });
-
-  window.loadURL(`file://${path.join(__dirname, 'index.html')}`);
-
-  // Hide the window when it loses focus
-  window.on('blur', () => {
-    if (!window.webContents.isDevToolsOpened()) {
-      window.hide();
-    }
-  });
-}
-
-const toggleWindow = () => {
-  if (window.isVisible()) {
-    window.hide();
-  } else {
-    showWindow();
-  }
-};
-
-const showWindow = () => {
-  const position = getWindowPosition();
-
-  window.setPosition(position.x, position.y, false);
-  window.show();
-  window.focus();
-}
-
-ipcMain.on('show-window', () => {
-  showWindow();
-})
-
-ipcMain.on('data-updated', (event, data) => {
-  const value = `$${data.USD}`;
-
-  tray.setTitle(value);
-  tray.setToolTip(value);
-})
+  // Refresh data every 30 seconds
+  setInterval(updateView, 1000 * 30);
+});

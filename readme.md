@@ -44,6 +44,5 @@ npm run package && open dist
 ## Credits
 
 - Depends on [Electron](http://electron.atom.io)
-- Depends on [photon](http://photonkit.com)
 - Uses the [CryptoCompare API](https://www.cryptocompare.com/)
 - Icon from [Coinranking](https://coinranking.com/)
