@@ -3,13 +3,20 @@ const path = require('path');
 const request = require('request');
 const open = require('open');
 
+const issuesURL = 'https://github.com/justinsisley/XRP-Ticker/issues';
+const latestReleaseURL = 'https://api.github.com/repos/justinsisley/XRP-Ticker/releases/latest';
+const cryptoPriceURL = 'https://www.bitstamp.net/api/v2/ticker/xrpusd/';
+
+// How often to fetch new data, in ms
+const refreshInterval = 1000 * 30;
+
 let tray;
 
 // Don't show the app in the dock
 app.dock.hide();
 
 const onQuit = () => app.quit();
-const onFileBug = () => open('https://github.com/justinsisley/XRP-Ticker/issues');
+const onFileBug = () => open(issuesURL);
 
 function getJSON(url) {
   return new Promise((resolve, reject) => {
@@ -32,9 +39,7 @@ function getJSON(url) {
 function createTray() {
   tray = new Tray(path.join(__dirname, 'assets', 'xrp.png'));
 
-  const url = 'https://api.github.com/repos/justinsisley/XRP-Ticker/releases/latest';
-
-  getJSON(url).then((release) => {
+  getJSON(latestReleaseURL).then((release) => {
     const contextMenu = Menu.buildFromTemplate([
       { type: 'normal', label: `XRP Ticker`, enabled: false },
       { type: 'normal', label: release.tag_name, enabled: false },
@@ -49,10 +54,8 @@ function createTray() {
 }
 
 function updateView() {
-  const url = 'https://min-api.cryptocompare.com/data/price?fsym=XRP&tsyms=USD';
-
-  getJSON(url).then((data) => {
-    const value = `$${data.USD}`;
+  getJSON(cryptoPriceURL).then((data) => {
+    const value = `$${data.last}`;
 
     tray.setTitle(value);
     tray.setToolTip(value);
@@ -65,6 +68,6 @@ app.on('ready', () => {
   // Get initial data
   updateView();
 
-  // Refresh data every 30 seconds
-  setInterval(updateView, 1000 * 30);
+  // Refresh data periodically
+  setInterval(updateView, refreshInterval);
 });
