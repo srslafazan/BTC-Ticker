@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="BTC" src="https://cdn.coinranking.com/Bkuz9Hd_-/BTC.svg" width="144">
+  <img alt="BTC" src="https://cdn.coinranking.com/Sy33Krudb/btc.svg" width="144">
 </p>
 
 <h3 align="center">
