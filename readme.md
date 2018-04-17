@@ -17,6 +17,10 @@
   <a href="https://david-dm.org/srslafazan/BTC-Ticker?type=dev"><img src="https://david-dm.org/srslafazan/BTC-Ticker/dev-status.svg?style=flat"></a>
 </p>
 
+## Credits
+
+All credits to Justin Sisley -- This is a re-implementation (based on his XRP-Ticker) for BTC tracking -- purely for electron learning and development purposes.
+
 ## Installation for Users
 
 [Download the latest release](https://github.com/srslafazan/BTC-Ticker/releases/latest), then unzip the archive and double-click on the app to run it. Feel free to move the app into `/Applications` if you'd like.
@@ -41,9 +45,7 @@ npm start
 npm run package && open dist
 ```
 
-## Credits
-
-* All credits to Justin Sisley -- This is a re-implementaiton (based on his XRP-Ticker) for BTC tracking -- purely for electron learning and development purposes.
+## Additional Credits
 
 - Depends on [Electron](http://electron.atom.io)
 - Uses the [CryptoCompare API](https://www.cryptocompare.com/)
