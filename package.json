@@ -1,16 +1,17 @@
 {
-  "name": "xrp-ticker",
-  "productName": "XRP Ticker",
-  "version": "1.0.2",
+  "name": "btc-ticker",
+  "productName": "BTC Ticker",
+  "version": "1.0.3",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "generate-iconset": "./bin/generate-iconset.sh btc.png btc",
+    "tar": "cd ./dist && tar -zcvf \"BTC Ticker-darwin-x64.tar.gz\" \"BTC Ticker-darwin-x64\"",
     "package": "electron-packager ./ --platform=darwin --arch=x64 --out=dist --icon=./assets/btc.icns --overwrite"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justinsisley/XRP-Ticker.git"
+    "url": "git+https://github.com/srslafazan/BTC-Ticker.git"
   },
   "license": "MIT",
   "author": "Justin Sisley",
