@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "generate-iconset": "./bin/generate-iconset.sh btc.png btc",
     "package": "electron-packager ./ --platform=darwin --arch=x64 --out=dist --icon=./assets/icon.icns --overwrite"
   },
   "repository": {
