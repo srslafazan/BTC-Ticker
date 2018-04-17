@@ -3,12 +3,12 @@ const path = require('path');
 const request = require('request');
 const open = require('open');
 
-const appName = 'XRP-Ticker';
-const baseRepo = `justinsisley/${appName}`;
+const appName = 'BTC-Ticker';
+const baseRepo = `srslafazan/${appName}`;
 
 const issuesURL = `https://github.com/${baseRepo}/issues`;
 const latestReleaseURL = `https://api.github.com/repos/${baseRepo}/releases/latest`;
-const cryptoPriceURL = 'https://www.bitstamp.net/api/v2/ticker/xrpusd/';
+const cryptoPriceURL = 'https://www.bitstamp.net/api/v2/ticker/btcusd/';
 
 // How often to fetch new data, in ms
 const refreshInterval = 1000 * 60;
@@ -40,28 +40,24 @@ function getJSON(url) {
 }
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, 'assets', 'xrp.png'));
+  tray = new Tray(path.join(__dirname, 'assets', 'btc.png'));
 
-  getJSON(latestReleaseURL)
-  .then((release) => {
-    const contextMenu = Menu.buildFromTemplate([
-      { type: 'normal', label: `XRP Ticker`, enabled: false },
-      { type: 'normal', label: release.tag_name, enabled: false },
-      { type: 'separator' },
-      { type: 'normal', label: 'File a Bug', click: onFileBug },
-      { type: 'separator' },
-      { type: 'normal', label: 'Quit', click: onQuit },
-    ]);
+  const contextMenu = Menu.buildFromTemplate([
+    { type: 'normal', label: `BTC Ticker`, enabled: false },
+    { type: 'separator' },
+    { type: 'normal', label: 'File a Bug', click: onFileBug },
+    { type: 'separator' },
+    { type: 'normal', label: 'Quit', click: onQuit },
+  ]);
 
-    tray.setContextMenu(contextMenu);
-  });
+  tray.setContextMenu(contextMenu);
 }
 
 function updateTitle() {
   getJSON(cryptoPriceURL)
   .then((price) => {
     const value = `$${price.last}`;
-
+    console.log('value: ', value)
     tray.setTitle(value);
   });
 }
