@@ -44,7 +44,8 @@ function createTray() {
   getJSON(latestReleaseURL)
   .then((release) => {
     const contextMenu = Menu.buildFromTemplate([
-      { type: 'normal', label: `BTC Ticker`, enabled: false },
+      { type: 'normal', label: 'BTC Ticker', enabled: false },
+      { type: 'normal', label: `v${release.tag_name}`, enabled: false },
       { type: 'separator' },
       { type: 'normal', label: 'File a Bug', click: onFileBug },
       { type: 'separator' },
@@ -59,7 +60,6 @@ function updateTitle() {
   getJSON(cryptoPriceURL)
   .then((price) => {
     const value = `$${price.last}`;
-    console.log('value: ', value)
     tray.setTitle(value);
   });
 }
