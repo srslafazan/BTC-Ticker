@@ -1,7 +1,7 @@
 {
   "name": "btc-ticker",
   "productName": "BTC Ticker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
