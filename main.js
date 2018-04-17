@@ -41,16 +41,18 @@ function getJSON(url) {
 
 function createTray() {
   tray = new Tray(path.join(__dirname, 'assets', 'btc.png'));
+  getJSON(latestReleaseURL)
+  .then((release) => {
+    const contextMenu = Menu.buildFromTemplate([
+      { type: 'normal', label: `BTC Ticker`, enabled: false },
+      { type: 'separator' },
+      { type: 'normal', label: 'File a Bug', click: onFileBug },
+      { type: 'separator' },
+      { type: 'normal', label: 'Quit', click: onQuit },
+    ]);
 
-  const contextMenu = Menu.buildFromTemplate([
-    { type: 'normal', label: `BTC Ticker`, enabled: false },
-    { type: 'separator' },
-    { type: 'normal', label: 'File a Bug', click: onFileBug },
-    { type: 'separator' },
-    { type: 'normal', label: 'Quit', click: onQuit },
-  ]);
-
-  tray.setContextMenu(contextMenu);
+    tray.setContextMenu(contextMenu);
+  })
 }
 
 function updateTitle() {
